@@ -14,21 +14,38 @@ export const Button: React.FC<ButtonProps> = ({
     ...props
 }) => {
     const variants = {
-        default: 'bg-blue-600 hover:bg-blue-700 text-white',
-        outline: 'border border-gray-300 hover:bg-gray-50 text-gray-700',
-        ghost: 'hover:bg-gray-100 text-gray-700'
+        default: `
+        relative bg-gradient-to-r from-blue-600 to-blue-500 text-white 
+        shadow-[0_0_10px_rgba(0,242,255,0.6)]
+        hover:shadow-[0_0_20px_rgba(0,242,255,0.9)]
+        hover:from-blue-500 hover:to-blue-400
+        active:scale-95
+    `,
+        outline: `
+        relative border-2 border-cyan-400 text-cyan-300
+        hover:bg-cyan-400/20 
+        shadow-[0_0_6px_rgba(0,242,255,0.5)]
+        hover:shadow-[0_0_15px_rgba(0,242,255,0.8)]
+        active:scale-95
+    `,
+        ghost: `
+        relative text-gray-300 hover:text-white 
+        hover:bg-white/10
+        active:scale-95
+    `,
     };
 
     const sizes = {
-        sm: 'px-3 py-1.5 text-sm',
-        md: 'px-4 py-2',
-        lg: 'px-6 py-3 text-lg'
+        sm: 'px-3 py-1.5 text-sm rounded-lg',
+        md: 'px-5 py-2.5 text-base rounded-xl',
+        lg: 'px-6 py-3 text-lg rounded-2xl',
     };
 
     return (
         <button
             className={cn(
-                'rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed',
+                'font-game transition-all duration-200 ease-out select-none',
+                'focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2',
                 variants[variant],
                 sizes[size],
                 className

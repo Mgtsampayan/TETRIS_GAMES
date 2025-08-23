@@ -34,7 +34,6 @@ export const Select: React.FC<SelectProps> = ({
                 setIsOpen(false);
             }
         };
-
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
@@ -44,60 +43,28 @@ export const Select: React.FC<SelectProps> = ({
         setIsOpen(false);
     };
 
-    const handleKeyDown = (event: React.KeyboardEvent) => {
-        if (disabled) return;
-
-        switch (event.key) {
-            case 'Enter':
-            case ' ':
-                event.preventDefault();
-                setIsOpen(!isOpen);
-                break;
-            case 'Escape':
-                setIsOpen(false);
-                break;
-            case 'ArrowDown':
-                event.preventDefault();
-                if (!isOpen) {
-                    setIsOpen(true);
-                } else {
-                    // Focus next option (simplified)
-                }
-                break;
-            case 'ArrowUp':
-                event.preventDefault();
-                if (isOpen) {
-                    // Focus previous option (simplified)
-                }
-                break;
-        }
-    };
-
     return (
-        <div ref={selectRef} className={cn('relative', className)}>
+        <div ref={selectRef} className={cn('relative w-full', className)}>
             <button
                 type="button"
                 onClick={() => !disabled && setIsOpen(!isOpen)}
-                onKeyDown={handleKeyDown}
                 disabled={disabled}
                 className={cn(
-                    'w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm',
-                    'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-                    'disabled:bg-gray-50 disabled:text-gray-500 disabled:cursor-not-allowed',
-                    isOpen && 'ring-2 ring-blue-500 border-blue-500'
+                    'w-full px-4 py-2 rounded-xl bg-gray-900 text-gray-100 border',
+                    'border-gray-700 shadow-inner text-left font-mono relative',
+                    'focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400',
+                    'disabled:opacity-50 disabled:cursor-not-allowed',
+                    isOpen && 'ring-2 ring-cyan-400 border-cyan-400'
                 )}
-                aria-haspopup="listbox"
-                aria-expanded={isOpen}
-                aria-labelledby="select-label"
             >
                 <span className="block truncate">
                     {selectedOption ? selectedOption.label : placeholder}
                 </span>
-                <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                <span className="absolute inset-y-0 right-3 flex items-center">
                     <svg
                         className={cn(
-                            'w-5 h-5 text-gray-400 transition-transform',
-                            isOpen && 'transform rotate-180'
+                            'w-5 h-5 text-cyan-300 transition-transform duration-200',
+                            isOpen && 'rotate-180'
                         )}
                         fill="none"
                         stroke="currentColor"
@@ -109,16 +76,18 @@ export const Select: React.FC<SelectProps> = ({
             </button>
 
             {isOpen && (
-                <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
-                    <ul role="listbox" className="py-1">
+                <div className="absolute z-50 mt-2 w-full rounded-xl bg-gray-900 border border-cyan-400 shadow-lg overflow-hidden animate-slide-up">
+                    <ul className="max-h-60 overflow-auto">
                         {options.map((option) => (
                             <li
                                 key={option.value}
                                 role="option"
                                 aria-selected={option.value === value}
                                 className={cn(
-                                    'px-3 py-2 cursor-pointer select-none hover:bg-blue-50',
-                                    option.value === value && 'bg-blue-100 text-blue-900'
+                                    'px-4 py-2 cursor-pointer transition-colors',
+                                    option.value === value
+                                        ? 'bg-cyan-500/20 text-cyan-300'
+                                        : 'hover:bg-cyan-400/10 text-gray-200'
                                 )}
                                 onClick={() => handleSelect(option.value)}
                             >
